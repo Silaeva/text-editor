@@ -5,7 +5,7 @@ module.exports = {
         jest: true,
         node: 1,
     },
-    extends: ['plugin:react/recommended', 'airbnb',],
+    extends: ['plugin:react/recommended', 'airbnb'],
     parser: '@typescript-eslint/parser',
     parserOptions: {
         ecmaFeatures: {
@@ -25,7 +25,7 @@ module.exports = {
         }],
         'import/no-unresolved': 'off',
         'import/prefer-default-export': 'off',
-        'no-unused-vars': 'warn',
+        'no-unused-vars': 'error',
         'react/require-default-props': 'off',
         'react/react-in-jsx-scope': 'off',
         'react/jsx-props-no-spreading': 'warn',
@@ -42,6 +42,7 @@ module.exports = {
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'error',
         'react/jsx-max-props-per-line': [1, { maximum: 2 }],
+        'func-call-spacing': ['error', 'never'],
     },
     overrides: [{
         files: ['*.ts', '*.tsx'],

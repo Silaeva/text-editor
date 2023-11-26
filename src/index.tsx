@@ -1,7 +1,7 @@
 import { render } from "react-dom";
-import { App } from "./app/App";
-import "app/styles/index.scss";
-import ErrorBoundary from "app/providers/errorBoundary/ui/ErrorBoundary";
+import { App } from "./App";
+import "styles/index.scss";
+import ErrorBoundary from "providers/errorBoundary/ui/ErrorBoundary";
 
 render(
   <ErrorBoundary>

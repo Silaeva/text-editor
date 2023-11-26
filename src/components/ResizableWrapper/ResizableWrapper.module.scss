@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  box-shadow: 0 0 22px 5px var(--color-box-shadow);
+  border-radius: 10px;
+  height: 100%;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebarContent {
+  padding: 20px;
+  flex: 1;
+}
+
+.contentContainer {
+  width: 100%;
+  padding: 20px;
+  max-height: 100%;
+}
+
+.resizer {
+  cursor: ew-resize;
+  width: 3px;
+  background-color: var(--color-background-secondary);
+}
+
+.resizer:hover,
+.resizing {
+  width: 6px;
+  box-shadow: 0 0 10px 3px var(--color-box-shadow);
+}
