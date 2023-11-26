@@ -1,11 +1,10 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import {
     useCallback, useEffect, useRef, useState,
-} from 'react';
-import { isHTMLElement } from 'interfaces/index';
-import styles from 'components/ResizableWrapper/ResizableWrapper.module.scss';
-import { classNames } from 'lib/classNames/classNames';
-import { MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH } from './ResizableWrapper.constants';
+} from "react";
+import { isHTMLElement } from "interfaces/index";
+import styles from "components/ResizableWrapper/ResizableWrapper.module.scss";
+import { classNames } from "lib/classNames/classNames";
+import { MAX_SIDEBAR_WIDTH, MIN_SIDEBAR_WIDTH } from "./ResizableWrapper.constants";
 
 interface Props {
   sidebar: React.ReactNode;
@@ -28,7 +27,7 @@ const ResizableWrapper: React.FC<Props> = ({ sidebar, content }) => {
     const handleResize = useCallback(
         (mouseMoveEvent: MouseEvent) => {
             if (isResizing && isHTMLElement(sidebarRef.current)) {
-                const sidebarLeftPosition = sidebarRef.current?.getBoundingClientRect().left || 0;
+                const sidebarLeftPosition = sidebarRef.current.getBoundingClientRect().left;
                 const updatedSidebarWidth = mouseMoveEvent.clientX - sidebarLeftPosition;
                 const isAllowedWidth = updatedSidebarWidth >= MIN_SIDEBAR_WIDTH
                 && updatedSidebarWidth <= MAX_SIDEBAR_WIDTH;
@@ -41,11 +40,11 @@ const ResizableWrapper: React.FC<Props> = ({ sidebar, content }) => {
     );
 
     useEffect(() => {
-        window.addEventListener('mousemove', handleResize);
-        window.addEventListener('mouseup', handleStopResizing);
+        window.addEventListener("mousemove", handleResize);
+        window.addEventListener("mouseup", handleStopResizing);
         return () => {
-            window.removeEventListener('mousemove', handleResize);
-            window.removeEventListener('mouseup', handleStopResizing);
+            window.removeEventListener("mousemove", handleResize);
+            window.removeEventListener("mouseup", handleStopResizing);
         };
     }, [handleResize, handleStopResizing]);
 
@@ -59,7 +58,7 @@ const ResizableWrapper: React.FC<Props> = ({ sidebar, content }) => {
             >
                 <div className={styles.sidebarContent}>{sidebar}</div>
                 <div
-                    className={classNames(styles.resizer, {}, [isResizing ? styles.resizing : ''])}
+                    className={classNames(styles.resizer, {}, [isResizing ? styles.resizing : ""])}
                     onMouseDown={handleStartResizing}
                 />
             </div>
