@@ -16,9 +16,9 @@ const ResizableWrapper: React.FC<Props> = ({ sidebar, content }) => {
     const [isResizing, setIsResizing] = useState(false);
     const [sidebarWidth, setSidebarWidth] = useState(300);
 
-    const handleStartResizing = useCallback(() => {
+    const handleStartResizing = () => {
         setIsResizing(true);
-    }, []);
+    };
 
     const handleStopResizing = useCallback(() => {
         setIsResizing(false);
@@ -56,7 +56,7 @@ const ResizableWrapper: React.FC<Props> = ({ sidebar, content }) => {
                 style={{ width: sidebarWidth }}
                 onMouseDown={(e) => e.preventDefault()}
             >
-                <div className={styles.sidebarContent}>{sidebar}</div>
+                <div className={styles.sidebarContent} style={{ width: sidebarWidth - 10 }}>{sidebar}</div>
                 <div
                     className={classNames(styles.resizer, {}, [isResizing ? styles.resizing : ""])}
                     onMouseDown={handleStartResizing}
