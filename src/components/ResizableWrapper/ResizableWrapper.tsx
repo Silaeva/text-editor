@@ -1,5 +1,5 @@
 import {
-    useCallback, useEffect, useRef, useState,
+    MouseEvent, useCallback, useEffect, useRef, useState,
 } from "react";
 import { isHTMLElement } from "interfaces/index";
 import styles from "components/ResizableWrapper/ResizableWrapper.module.scss";
@@ -16,7 +16,8 @@ const ResizableWrapper: React.FC<Props> = ({ sidebar, content }) => {
     const [isResizing, setIsResizing] = useState(false);
     const [sidebarWidth, setSidebarWidth] = useState(300);
 
-    const handleStartResizing = () => {
+    const handleStartResizing = (event: MouseEvent) => {
+        event.preventDefault();
         setIsResizing(true);
     };
 
@@ -25,10 +26,10 @@ const ResizableWrapper: React.FC<Props> = ({ sidebar, content }) => {
     }, []);
 
     const handleResize = useCallback(
-        (mouseMoveEvent: MouseEvent) => {
-            if (isResizing && isHTMLElement(sidebarRef.current)) {
+        (event: MouseEventInit) => {
+            if (isResizing && isHTMLElement(sidebarRef.current) && event.clientX) {
                 const sidebarLeftPosition = sidebarRef.current.getBoundingClientRect().left;
-                const updatedSidebarWidth = mouseMoveEvent.clientX - sidebarLeftPosition;
+                const updatedSidebarWidth = event.clientX - sidebarLeftPosition;
                 const isAllowedWidth = updatedSidebarWidth >= MIN_SIDEBAR_WIDTH
                 && updatedSidebarWidth <= MAX_SIDEBAR_WIDTH;
                 if (isAllowedWidth) {
@@ -40,11 +41,11 @@ const ResizableWrapper: React.FC<Props> = ({ sidebar, content }) => {
     );
 
     useEffect(() => {
-        window.addEventListener("mousemove", handleResize);
-        window.addEventListener("mouseup", handleStopResizing);
+        document.addEventListener("mousemove", handleResize);
+        document.addEventListener("mouseup", handleStopResizing);
         return () => {
-            window.removeEventListener("mousemove", handleResize);
-            window.removeEventListener("mouseup", handleStopResizing);
+            document.removeEventListener("mousemove", handleResize);
+            document.removeEventListener("mouseup", handleStopResizing);
         };
     }, [handleResize, handleStopResizing]);
 
@@ -54,7 +55,6 @@ const ResizableWrapper: React.FC<Props> = ({ sidebar, content }) => {
                 ref={sidebarRef}
                 className={styles.sidebar}
                 style={{ width: sidebarWidth }}
-                onMouseDown={(e) => e.preventDefault()}
             >
                 <div className={styles.sidebarContent} style={{ width: sidebarWidth - 10 }}>{sidebar}</div>
                 <div

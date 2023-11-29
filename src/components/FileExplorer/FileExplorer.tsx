@@ -1,374 +1,82 @@
 import { observer } from "mobx-react";
-import { TreeEntity, TreeEntityType } from "interfaces";
+import { ModalConfig, ModalMode, TreeEntityType } from "interfaces";
 
 import styles from "./FileExplorer.module.scss";
 import { Entity } from "components/Entity/Entity";
+import { treeStore } from "store/treeStore";
+import { Button, Divider, Tooltip } from "antd";
+import { PlusSquareOutlined, SaveOutlined, UndoOutlined } from "@ant-design/icons";
+import { EditingModal } from "components/EditingModal/EditingModal";
+import { useState, MouseEvent, useCallback } from "react";
 
-const FileExplorer: React.FC= observer(() => {
-    // const { treeEntities } = treeStore;
+const FileExplorer: React.FC = observer(() => {
+    const {
+        treeEntities,
+        activeTreeEntity,
+        activeTreeEntityId,
+        saveTreeEntities,
+        cancelTreeEntitiesChanges,
+        resetActiveEntity,
+    } = treeStore;
+    const [modalConfig, setModalConfig] = useState<ModalConfig | null>(null);
 
-    const mockTreeEntities: Record<string, TreeEntity> = {
-        "dsfgsdfc435236": {
-            type: TreeEntityType.FOLDER,
-            name: "first folder",
-            contentList: { "sdgfscfw45645y7u876":  { name: "some file", type: TreeEntityType.FILE, text: "some file text some file text some file text some file text some file text"}}
-        },
-        "dsfgsdfe5463ygfc435236": {
-            type: TreeEntityType.FOLDER,
-            name: "empty object folder",
-            contentList: {},
-        },
-        "dsfg765463ygfc435236": {
-            type: TreeEntityType.FOLDER,
-            name: "no content folder",
-        },
-        "dsfgsdfcwefwefrwe435236": {
-            type: TreeEntityType.FOLDER,
-            name: "second folder",
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {
-                                "sdgfssdg4678098765876":  {
-                                    name: "some inner folder",
-                                    type: TreeEntityType.FOLDER,
-                                    contentList: {
-                                        "sdgfssdg4678645y7u876":  {
-                                            name: "some second file",
-                                            type: TreeEntityType.FILE,
-                                            text: "second some file text some file text some file text some file text some file text",
-                                        },
-                                        "sdgfssdg4678098765876":  {
-                                            name: "some inner folder",
-                                            type: TreeEntityType.FOLDER,
-                                            contentList: {},
-                                        }
-                                    },
-                                },
-                                "sdgfssdg4678645y7u876":  {
-                                    name: "some second file",
-                                    type: TreeEntityType.FILE,
-                                    text: "second some file text some file text some file text some file text some file text",
-                                },
+    const handleModalClose = () => {
+        setModalConfig(null);
+    };
 
-                            },
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
+    const handleSetModalConfig = useCallback((config: ModalConfig) => {
+        setModalConfig(config);
+    }, []);
 
-            }
-        },
-        "sdgfssdg4678098765876":  {
-            name: "some inner folder",
-            type: TreeEntityType.FOLDER,
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {},
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
 
-            },
-        },
-        "sdgfssghjhgfdrfss6780fgdhtn5876":  {
-            name: "some inner folder",
-            type: TreeEntityType.FOLDER,
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {},
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
+    const handleSave = () => {
+        saveTreeEntities();
+    };
 
-            },
-        },
-        "sdgfssghjhgf-plp;l,lm76":  {
-            name: "some inner folder",
-            type: TreeEntityType.FOLDER,
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {},
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
+    const handleCancel = () => {
+        cancelTreeEntitiesChanges();
+    };
 
-            },
-        },
-        "sdgfssghj;.m,[]76":  {
-            name: "some inner folder",
-            type: TreeEntityType.FOLDER,
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {},
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
-
-            },
-        },
-        "sdnm,p5876":  {
-            name: "some inner folder",
-            type: TreeEntityType.FOLDER,
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {},
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
-
-            },
-        },
-        "sdgfssgh.;tn5876":  {
-            name: "some inner folder",
-            type: TreeEntityType.FOLDER,
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {},
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
-
-            },
-        },
-        "sdgfssghjhgfdrp-l,6":  {
-            name: "some inner folder",
-            type: TreeEntityType.FOLDER,
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {},
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
-
-            },
-        },
-        "sdgfssghjhgfdrfnnmtyn80fgdhtn5876":  {
-            name: "some inner folder",
-            type: TreeEntityType.FOLDER,
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {},
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
-
-            },
-        },
-        "sdgfssgfhjk76":  {
-            name: "some inner folder",
-            type: TreeEntityType.FOLDER,
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {},
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
-
-            },
-        },
-        "sdgfssghjhlmkfgdhtn5876":  {
-            name: "some inner folder",
-            type: TreeEntityType.FOLDER,
-            contentList: {
-                "sdgfssdg4678098765876":  {
-                    name: "some inner folder",
-                    type: TreeEntityType.FOLDER,
-                    contentList: {
-                        "sdgfssdg4678645y7u876":  {
-                            name: "some second file",
-                            type: TreeEntityType.FILE,
-                            text: "second some file text some file text some file text some file text some file text",
-                        },
-                        "sdgfssdg4678098765876":  {
-                            name: "some inner folder",
-                            type: TreeEntityType.FOLDER,
-                            contentList: {},
-                        }
-                    },
-                },
-                "sdgfssdg4678645y7u876":  {
-                    name: "some second file",
-                    type: TreeEntityType.FILE,
-                    text: "second some file text some file text some file text some file text some file text",
-                },
-
-            },
-        },
-
-    }
-
-    const treeEntities = mockTreeEntities;
+    const handleCreate = (event: MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        setModalConfig({ mode: ModalMode.CREATE, entityId: activeTreeEntityId });
+    };
 
     return (
-        <div className={styles.container}>
-            {Object.entries(treeEntities).map(([entityId, entity]) => {
-                return (
-                    <Entity
-                        key={entityId}
-                        entityId={entityId}
-                        entity={entity}
-                    />
-                )
-            })}
+        <div className={styles.container} onClick={resetActiveEntity}>
+            {modalConfig && <EditingModal modalConfig={modalConfig} onClose={handleModalClose} />}
+            <div>
+                <div className={styles.buttons}>
+                    <Tooltip title="Сбросить последние изменения" className={styles.cancelButton}>
+                        <Button type="default" onClick={handleCancel}
+                            icon={<UndoOutlined />} />
+                    </Tooltip>
+                    <Tooltip title="Добавить">
+                        <Button
+                            type="default"
+                            onClick={handleCreate}
+                            icon={<PlusSquareOutlined />}
+                            disabled={activeTreeEntity?.type === TreeEntityType.FILE}
+                        />
+                    </Tooltip>
+                    <Tooltip title="Сохранить все изменения">
+                        <Button type="default" onClick={handleSave}
+                            icon={<SaveOutlined />} />
+                    </Tooltip>
+                </div>
+                <Divider className={styles.divider} />
+            </div>
+            {treeEntities &&
+                Object.entries(treeEntities).map(([entityId, entity]) => {
+                    return (
+                        <Entity
+                            key={entityId}
+                            entityId={entityId}
+                            entity={entity}
+                            onShowModal={handleSetModalConfig}
+                        />
+                    );
+                })}
         </div>
     );
 });

@@ -14,7 +14,7 @@
 
 .sidebarContent {
   padding: 20px;
-  overflow-y: auto;
+  overflow: auto;
   flex: 1;
 }
 
@@ -27,11 +27,12 @@
 .resizer {
   cursor: ew-resize;
   width: 3px;
-  background-color: var(--color-background-secondary);
+  background-color: var(--color-background-active);
 }
 
 .resizer:hover,
 .resizing {
   width: 6px;
   box-shadow: 0 0 10px 3px var(--color-box-shadow);
+  transition: all 0.3s;
 }

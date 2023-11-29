@@ -2,20 +2,19 @@ import { FileOutlined, FileUnknownOutlined, FolderFilled, FolderOpenFilled, Fold
 import { TreeEntity, TreeEntityType } from "interfaces";
 
 interface Props {
-   entity: TreeEntity;
+    entity: TreeEntity;
     isOpen: boolean;
-    onClick: () => void;
 }
 
-const EntityIcon: React.FC<Props> = ({entity, isOpen, onClick}) => {
-    const {type, contentList = {}} = entity;
+const EntityIcon: React.FC<Props> = ({ entity, isOpen }) => {
+    const { type, contentList = {} } = entity;
 
     switch (type) {
     case TreeEntityType.FOLDER:
         if (Object.keys(contentList).length) {
-            return isOpen ? <FolderOpenFilled onClick={onClick}/> : <FolderFilled onClick={onClick} />
+            return isOpen ? <FolderOpenFilled /> : <FolderFilled/>
         } else {
-            return isOpen ? <FolderOpenOutlined onClick={onClick} /> : <FolderOutlined onClick={onClick} />;
+            return isOpen ? <FolderOpenOutlined /> : <FolderOutlined />;
         }
     case TreeEntityType.FILE:
         return <FileOutlined />

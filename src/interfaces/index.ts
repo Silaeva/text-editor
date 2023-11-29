@@ -13,8 +13,18 @@ export enum TreeEntityType {
     FILE = "file",
 }
 export interface TreeEntity {
-    type: TreeEntityType,
+    type: TreeEntityType | undefined,
     name: string;
     text?: string;
     contentList?: Record<string, TreeEntity>;
+}
+export enum ModalMode {
+    EDIT = "editing",
+    CREATE = "create",
+}
+
+export interface ModalConfig {
+    mode: ModalMode;
+    entity?: TreeEntity;
+    entityId?: string;
 }
