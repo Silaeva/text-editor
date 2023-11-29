@@ -11,18 +11,23 @@ Used technologies:
 
 1. The page contains a sidebar and a text editing window:
     - Sidebar resizes
+
     ![resizes](./public/assets/Resize.png)
+
     - Text editor fills the remaining space
 2. Sidebar supports next actions:
     - add new element (adds new element to active folder or in top level if no folder is selected)
 
     ![add](./public/assets/AddButton.png)
+
     - save all created tree of elements to local storage
 
     ![save](./public/assets/SaveButton.png)
+
     - reset button returns the tree to the previous saved state (all states are stacked in local storage)
 
     ![reset](./public/assets/ResetButton.png)
+
 3. Context menu:
     - on folder element allows to add, edit or delete element
     - on file element - edit or delete element
