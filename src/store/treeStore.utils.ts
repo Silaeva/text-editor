@@ -42,7 +42,7 @@ export const createProperty = (record: Record<string, TreeEntity> | undefined, n
 };
 
 export const findPropertyValue = (record: Record<string, TreeEntity> | undefined, searchId: string | undefined): TreeEntity | undefined => {
-    if (record && searchId && record[searchId]){
+    if (record && searchId && record[searchId]) {
         return record[searchId];
     };
 
