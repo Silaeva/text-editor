@@ -17,6 +17,7 @@ const FileExplorer: React.FC = observer(() => {
         saveTreeEntities,
         cancelTreeEntitiesChanges,
         resetActiveEntity,
+        editorValueChanged,
     } = treeStore;
     const [modalConfig, setModalConfig] = useState<ModalConfig | null>(null);
 
@@ -59,9 +60,13 @@ const FileExplorer: React.FC = observer(() => {
                             disabled={activeTreeEntity?.type === TreeEntityType.FILE}
                         />
                     </Tooltip>
-                    <Tooltip title="Сохранить все изменения">
-                        <Button type="default" onClick={handleSave}
-                            icon={<SaveOutlined />} />
+                    <Tooltip title={editorValueChanged ? "Необходимо сохранить изменения файла" : "Сохранить все изменения"}>
+                        <Button
+                            type="default"
+                            onClick={handleSave}
+                            disabled={editorValueChanged}
+                            icon={<SaveOutlined />}
+                        />
                     </Tooltip>
                 </div>
                 <Divider className={styles.divider} />

@@ -17,13 +17,18 @@ class TreeStore {
             .getItem<Record<string, TreeEntity>>(LocalStorageKey.TREE_ENTITIES) || {};
     }
 
-    createEntity = (newEntity: TreeEntity | undefined, parentId?: string) => {
+    createEntity = (newEntity: TreeEntity | undefined, parentId?: string, newEntityId?: string) => {
         if (newEntity) {
-            const entityID = uuid();
+            const entityID = newEntityId || uuid();
             const copiedRecord = { ...this.treeEntities };
             const updatedEntities = createProperty(copiedRecord, entityID, newEntity, parentId);
             this.treeEntities = updatedEntities;
         }
+    }
+
+    moveEntity = (entityID: string, newEntity: TreeEntity, parentId: string | undefined) => {
+        this.deleteEntity(entityID);
+        this.createEntity(newEntity, parentId, entityID);
     }
 
     updateEntity = (updatedEntity: TreeEntity | undefined, id: string | undefined) => {
@@ -54,13 +59,13 @@ class TreeStore {
         this.activeTreeEntity = activeTreeEntity;
     }
 
+    updateActiveEntity = (updatedEntity: TreeEntity) => {
+        this.activeTreeEntity = updatedEntity;
+    }
+
     saveTreeEntities = () => {
-        if (this.editorValueChanged) {
-            notification.warning({message: "Необходимо сохранить изменения файла"});
-        } else {
-            localStorageService.setItem(LocalStorageKey.TREE_ENTITIES, this.treeEntities);
-            notification.info({message: "Изменения сохранены"});
-        }
+        localStorageService.setItem(LocalStorageKey.TREE_ENTITIES, this.treeEntities);
+        notification.info({message: "Изменения сохранены"});
     }
 
     cancelTreeEntitiesChanges = () => {
@@ -73,6 +78,10 @@ class TreeStore {
     resetActiveEntity = () => {
         treeStore.activeTreeEntity = undefined;
         treeStore.activeTreeEntityId = undefined;
+    }
+
+    setEditorValueChanged = (isChanged: boolean) => {
+        this.editorValueChanged = isChanged;
     }
 }
 
