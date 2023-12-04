@@ -3,6 +3,7 @@
 Used technologies:
   * TypeScript/React
   * MobX
+  * React DnD
   * Ant Design
   * HTML/SCSS (css-modules)
   * Webpack
@@ -16,6 +17,8 @@ Used technologies:
 
     - Text editor fills the remaining space
 2. Sidebar supports next actions:
+    - drag files and folders (with all contents) to other folders on
+any level of nesting
     - add new element (adds new element to active folder or in top level if no folder is selected)
 
     ![add](./public/assets/AddButton.png)
@@ -35,7 +38,6 @@ Used technologies:
     - service for managing local storage state
     - custom function to combine class names
 5. To be added and improved:
-    - drag and drop
     - apply antd form to manage state of fields in modal - validate values, disable form elements, show hints.
     - support of multiple open tabs with text content
     - text formatting
